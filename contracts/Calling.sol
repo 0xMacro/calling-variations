@@ -12,12 +12,12 @@ contract Calling {
         calledAddr = _calledAddr;
     }
 
-    function doStuff1() external {
+    function castThenCallOk() external {
         Called otherContract = Called(calledAddr);
         data = otherContract.thisOneIsOk();
     }
 
-    function doStuff2() external {
+    function abiEncodeThenCallOk() external {
         bytes memory callSig = abi.encodeWithSignature("thisOneIsOk()");
         (bool success, bytes memory returnedData) = calledAddr.call(callSig);
         if (success) {
@@ -28,7 +28,7 @@ contract Calling {
         }
     }
                                          
-    function doStuff3() external {
+    function delegatecallOk() external {
         bytes memory callSig = abi.encodeWithSignature("thisOneIsOk()");
         (bool success, bytes memory returnedData) = calledAddr.delegatecall(callSig);
         if (success) {
@@ -39,12 +39,12 @@ contract Calling {
         }
     }
                                          
-    function doStuff4() external {
+    function castThenCallMaybe() external {
         Called otherContract = Called(calledAddr);
         data = otherContract.thisOneMaybeNot();
     }
 
-    function doStuff5() external {
+    function abiEncodeThenCallMaybe() external {
         bytes memory callSig = abi.encodeWithSignature("thisOneMaybeNot()");
         (bool success, bytes memory returnedData) = calledAddr.call(callSig);
         if (success) {
@@ -55,7 +55,7 @@ contract Calling {
         }
     }
                                          
-    function doStuff6() external {
+    function delegatecallMaybe() external {
         bytes memory callSig = abi.encodeWithSignature("thisOneMaybeNot()");
         (bool success, bytes memory returnedData) = calledAddr.delegatecall(callSig);
         if (success) {
