@@ -18,31 +18,51 @@ contract Calling {
     }
 
     function doStuff2() external {
-        Called otherContract = Called(calledAddr);
-        data = otherContract.thisOneIsNot();
-    }
-
-    function doStuff3() external {
-        (bool success, bytes memory returnedData) = calledAddr.call(abi.encodeWithSignature("thisOneIsOk()"));
+        bytes memory callSig = abi.encodeWithSignature("thisOneIsOk()");
+        (bool success, bytes memory returnedData) = calledAddr.call(callSig);
         if (success) {
             (uint dataBack) = abi.decode(returnedData, (uint));
             data = dataBack;
+        } else {
+            data = 0;
+        }
+    }
+                                         
+    function doStuff3() external {
+        bytes memory callSig = abi.encodeWithSignature("thisOneIsOk()");
+        (bool success, bytes memory returnedData) = calledAddr.delegatecall(callSig);
+        if (success) {
+            (uint dataBack) = abi.decode(returnedData, (uint));
+            data = dataBack;
+        } else {
+            data = 0;
         }
     }
                                          
     function doStuff4() external {
-        (bool success, bytes memory returnedData) = calledAddr.call(abi.encodeWithSignature("thisOneIsNot()"));
+        Called otherContract = Called(calledAddr);
+        data = otherContract.thisOneMaybeNot();
+    }
+
+    function doStuff5() external {
+        bytes memory callSig = abi.encodeWithSignature("thisOneMaybeNot()");
+        (bool success, bytes memory returnedData) = calledAddr.call(callSig);
         if (success) {
             (uint dataBack) = abi.decode(returnedData, (uint));
             data = dataBack;
+        } else {
+            data = 0;
         }
     }
                                          
-    function doStuff5() external {
-        (bool success, bytes memory returnedData) = calledAddr.delegatecall(abi.encodeWithSignature("thisOneIsOk()"));
+    function doStuff6() external {
+        bytes memory callSig = abi.encodeWithSignature("thisOneMaybeNot()");
+        (bool success, bytes memory returnedData) = calledAddr.delegatecall(callSig);
         if (success) {
             (uint dataBack) = abi.decode(returnedData, (uint));
             data = dataBack;
+        } else {
+            data = 0;
         }
     }
                                          

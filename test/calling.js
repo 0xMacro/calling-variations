@@ -14,27 +14,33 @@ describe("Calling contract", function () {
     await calling.deployed()
   })
 
-  it("calling doStuff1 should update data to 7", async function () {
+  it("regular call in doStuff1 should update data to 7", async function () {
     await calling.doStuff1()
     expect(await calling.data()).to.equal(7)
   })
 
-  it("calling doStuff2 should cause us to revert", async function () {
-    await expect(calling.doStuff2()).to.be.revertedWith("Uh oh!")
-  })
-
-  it("call doStuff3 should update data to 7", async function () {
-    await calling.doStuff3();
+  it("call abi encoded in doStuff2 should update data to 7", async function () {
+    await calling.doStuff2();
     expect(await calling.data()).to.equal(7)
   })
 
-  it("call doStuff4 should skip the update of data, leaving it at 5", async function () {
-    await calling.doStuff4();
+  it("delegate call in doStuff3 should update data with 5, the value it already had", async function () {
+    await calling.doStuff3();
     expect(await calling.data()).to.equal(5)
   })
 
-  it("call doStuff5 should update data with 5, the value it already had", async function () {
+  it("regular call in doStuff4 should cause us to revert, leaving data as 5", async function () {
+    await expect(calling.doStuff4()).to.be.revertedWith("Uh oh!")
+    expect(await calling.data()).to.equal(5)
+  })
+
+  it("call abi encoded in doStuff5 should fail in the nested call, then set data to 0", async function () {
     await calling.doStuff5();
+    expect(await calling.data()).to.equal(0)
+  })
+
+  it("delegate call in doStuff6 should update data with 5, the value it already had", async function () {
+    await calling.doStuff6();
     expect(await calling.data()).to.equal(5)
   })
 

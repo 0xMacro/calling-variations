@@ -9,7 +9,7 @@ contract Called {
         return theData;
     }
 
-    function thisOneIsNot() external view returns (uint) {
+    function thisOneMaybeNot() external view returns (uint) {
         require (theData < 7, "Uh oh!");
         return theData;
     }
