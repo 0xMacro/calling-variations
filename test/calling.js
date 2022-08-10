@@ -2,8 +2,7 @@ const { expect } = require("chai")
 
 describe("Calling contract", function () {
 
-  let calling
-  let called
+  let calling, called
   
   beforeEach(async function () {
     CalledFactory = await ethers.getContractFactory("Called")
@@ -34,7 +33,7 @@ describe("Calling contract", function () {
     expect(await calling.data()).to.equal(5)
   })
 
-  it("abiEncodeThenCallMaybe should fail in the nested call, then set data to 0", async function () {
+  it("abiEncodeThenCallMaybe should return success value of false, then set data to 0", async function () {
     await calling.abiEncodeThenCallMaybe();
     expect(await calling.data()).to.equal(0)
   })
